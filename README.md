@@ -1,138 +1,392 @@
-# EcoPile Expert
+# EcoPile Expert — Local Installation and Running Guide
 
-EcoPile Expert is a rule-based expert system for diagnosing common home-composting problems. It was developed in SWI-Prolog and contains 25 source-backed production rules.
+EcoPile Expert is a rule-based home-compost troubleshooting system developed using SWI-Prolog.
 
-The system asks the user questions about a compost pile, including its moisture, odor, temperature, ingredients, pest activity and readiness. It then identifies possible problems and recommends corrective actions.
+The application provides a graphical user interface that asks 23 questions about a compost pile. It uses 25 source-backed rules to identify possible problems and recommend corrective actions.
 
-## Main Features
+## Project Files
 
-- 25 IF-THEN expert-system rules
-- Interactive command-line interface
-- Multiple diagnoses can be produced in one assessment
-- Explanation of every fired rule
-- Preventive recommendations
-- Knowledge-source references
-- Derived facts
-- Automated tests using SWI-Prolog PlUnit
-- Input validation for menu questions
+Ensure all the following files are located in the same folder:
 
-## Technologies
+```text
+EcoPileExpert/
+├── gui.pl
+├── main.pl
+├── knowledge_base.pl
+├── inference_engine.pl
+├── test_system.pl
+├── README.md
+└── .gitignore
+```
 
-- SWI-Prolog 10.0.2
-- SWI-Prolog PlUnit
+File purposes:
 
-## Requirements
+- `gui.pl` — graphical user interface
+- `main.pl` — optional command-line interface
+- `knowledge_base.pl` — 25 expert-system rules
+- `inference_engine.pl` — rule-matching and fact-derivation logic
+- `test_system.pl` — automated tests
 
-Install the stable 64-bit version of SWI-Prolog:
+## System Requirements
+
+The system requires:
+
+- Windows 10 or Windows 11
+- SWI-Prolog 10.0.2 or a compatible version
+- Approximately 100 MB of available storage
+- A graphical desktop environment
+
+Python and external Prolog packages are not required.
+
+## Step 1: Download the Project
+
+### Option A — Download from GitHub
+
+1. Open the EcoPile Expert GitHub repository.
+2. Select the green **Code** button.
+3. Select **Download ZIP**.
+4. Open the downloaded ZIP file.
+5. Extract the project folder.
+6. Open the extracted `EcoPileExpert` folder.
+
+### Option B — Clone with Git
+
+If Git is installed, open PowerShell and run:
+
+```powershell
+git clone <repository-url>
+cd EcoPileExpert
+```
+
+Replace `<repository-url>` with the actual EcoPile Expert GitHub repository URL.
+
+## Step 2: Install SWI-Prolog
+
+Download the stable 64-bit Windows version of SWI-Prolog:
 
 https://www.swi-prolog.org/download/stable
 
-Verify the installation with:
+During installation:
+
+1. Use the default installation options.
+2. Associate `.pl` files with SWI-Prolog if asked.
+3. Enable the option to add SWI-Prolog to the system path if it is available.
+4. Complete the installation.
+5. Close and reopen PowerShell or Visual Studio Code.
+
+## Step 3: Verify the Installation
+
+Open PowerShell and run:
 
 ```powershell
 swipl --version
 ```
 
-The system was developed using:
+Expected output will be similar to:
 
 ```text
 SWI-Prolog version 10.0.2 for x64-win64
 ```
 
-## Running the System
+The exact version number may be different if a newer compatible version is installed.
 
-Open a terminal inside the project directory and run:
+## Step 4: Open a Terminal in the Project Folder
+
+### Using Visual Studio Code
+
+1. Open Visual Studio Code.
+2. Select **File → Open Folder**.
+3. Select the extracted `EcoPileExpert` folder.
+4. Select **Terminal → New Terminal**.
+
+### Using Windows File Explorer
+
+1. Open the extracted `EcoPileExpert` folder.
+2. Right-click an empty area inside the folder.
+3. Select **Open in Terminal**.
+
+The terminal path should end with the project-folder name:
+
+```text
+PS C:\Users\User\Downloads\EcoPileExpert>
+```
+
+You can confirm that the required files are present by running:
+
+```powershell
+Get-ChildItem
+```
+
+## Step 5: Run the Graphical Application
+
+From inside the project folder, run:
+
+```powershell
+swipl -q -s gui.pl
+```
+
+The EcoPile Expert graphical interface should open.
+
+Do not close the PowerShell terminal while using the application. Closing the terminal will also stop the Prolog program.
+
+## How to Use the GUI
+
+The application displays one question at a time.
+
+For each question:
+
+1. Open the answer dropdown.
+2. Select the answer that best describes the compost pile.
+3. Select **Next**.
+4. Continue until all 23 questions have been answered.
+
+The question progress is displayed in the interface:
+
+```text
+Question 1 of 23
+```
+
+After question 23, the results area displays:
+
+- The number of matching rules
+- The identifiers of the rules that fired
+- The problem category
+- The diagnosis
+- The recommended corrective action
+- The knowledge sources supporting the conclusion
+
+Use the scroll bar to read all the recommendations.
+
+## GUI Buttons
+
+### Next
+
+Saves the selected answer and displays the next question.
+
+After question 23, the **Next** button becomes disabled.
+
+### Restart
+
+Clears the current answers and starts a new assessment from question 1.
+
+### Exit
+
+Closes EcoPile Expert.
+
+## Example Assessment
+
+To test a wet compost pile with an odor problem, select answers representing:
+
+- Soggy or excessively wet moisture
+- Rotten-egg or sulfur smell
+- Not turned recently
+- Exposure to significant rain
+- Poor drainage
+- Insufficient brown material
+
+After the final question, the results should include several of these rules:
+
+```text
+r02
+r03
+r09
+r10
+r11
+r12
+r13
+```
+
+The exact set depends on all the answers supplied during the assessment.
+
+## Running the Command-Line Version
+
+A command-line version is also included as a fallback.
+
+Run:
 
 ```powershell
 swipl -q -s main.pl
 ```
 
-The system will display a series of numbered questions.
+For numbered questions, enter the number beside the required answer:
 
-After all questions have been answered, the system displays every matching diagnosis and recommended action.
+```text
+1. Dry
+2. Balanced - like a wrung-out sponge
+3. Soggy or excessively wet
+
+Your choice: 3
+```
+
+For yes-or-no questions, enter:
+
+```text
+yes
+```
+
+or:
+
+```text
+no
+```
+
+The command-line version displays the same rule-based diagnoses and recommendations.
 
 ## Running the Automated Tests
 
-Run:
+Open a terminal inside the project folder and run:
 
 ```powershell
 swipl -q -s test_system.pl -g run_tests -t halt
 ```
 
-The tests check:
+Successful tests are represented by dots. There should be no failed-test or error messages.
+
+For detailed test output, run:
+
+```powershell
+swipl -s test_system.pl -g run_tests -t halt
+```
+
+The automated tests verify:
 
 - The knowledge base contains exactly 25 rules
-- Rule IDs are unique
-- Every rule contains conditions
+- Every rule ID is unique
+- Every rule contains at least one condition
 - Every rule has a valid knowledge source
-- Derived facts are generated correctly
-- Dry-pile diagnosis
-- Excess-moisture diagnosis
-- Odor diagnosis
-- Heating problems
-- Unsuitable compost materials
-- Pest problems
-- Finished-compost identification
-- Normal pile with no warning
+- Bad odors produce the correct derived facts
+- Animal-attracting materials are detected
+- Dry-pile problems are identified
+- Wet-pile problems are identified
+- Odor problems are identified
+- Heating problems are identified
+- Unsuitable materials are detected
+- Pest problems are identified
+- Finished compost is recognized
+- A normal active pile does not produce unnecessary warnings
 
+## Troubleshooting
 
-## Rule Categories
+### The `swipl` command is not recognized
 
-| Category | Rule IDs | Purpose |
-|---|---|---|
-| Moisture | R01, R02, R09, R11, R12 | Identifies dry or excessively wet conditions |
-| Odor | R03, R04, R05 | Identifies causes of unusual odors |
-| Temperature | R06, R07, R08 | Identifies why a pile is not heating |
-| Aeration and balance | R10, R13 | Identifies airflow and material-balance problems |
-| Unsuitable materials | R14–R20 | Detects materials that should be avoided |
-| Pest management | R21–R24 | Identifies possible causes of animals and flies |
-| Compost readiness | R25 | Determines whether compost appears ready |
+If PowerShell displays:
 
-## Knowledge Sources
+```text
+swipl : The term 'swipl' is not recognized
+```
 
-The rules were not generated as unsupported personal opinions. They were derived from the following published sources.
+Try the following:
 
-### United States Environmental Protection Agency
+1. Close PowerShell or Visual Studio Code.
+2. Reopen it.
+3. Run `swipl --version` again.
 
-**Composting At Home**
+If the error remains, reinstall SWI-Prolog and ensure it is added to the Windows system path.
 
-https://www.epa.gov/recycle/composting-home
+### The GUI does not open
 
-Used for guidance concerning moisture, aeration, heating, brown and green materials, unsuitable materials, rodents and finished-compost characteristics.
+Confirm that `gui.pl` is present:
 
-### Cornell University
+```powershell
+Get-ChildItem gui.pl
+```
 
-**Troubleshooting Composting Problems**
+Check the GUI source file for syntax errors:
 
-https://compost.css.cornell.edu/trouble.html
+```powershell
+swipl -q -g "consult('gui.pl'),halt"
+```
 
-Used for troubleshooting insufficient heat, excessive moisture, odor, pile size, nitrogen balance and animal attraction.
+If no message appears, the file loaded successfully.
 
-### Cornell University
+Then run:
 
-**Monitoring Compost Odors**
+```powershell
+swipl -q -s gui.pl
+```
 
-https://compost.css.cornell.edu/monitor/monitorodor.html
+### XPCE cannot be loaded
 
-Used for ammonia, musty and sulfurous odor diagnoses.
+Check that the SWI-Prolog graphical library is available:
 
-### Oregon State University Extension Service
+```powershell
+swipl -q -g "use_module(library(pce)),writeln('XPCE ready'),halt"
+```
 
-**Make Compost That Really Cooks: Troubleshoot Heat, Odor and Pests**
+Expected output:
 
-https://extension.oregonstate.edu/news/make-compost-really-cooks-troubleshoot-heat-odor-pests
+```text
+XPCE ready
+```
 
-Used for pile-size, rotten-egg odor, rain protection and wildlife recommendations.
+If XPCE is unavailable, reinstall the complete 64-bit version of SWI-Prolog.
 
-## Scope
+### A project file cannot be found
 
-EcoPile Expert is intended for ordinary home and backyard compost piles.
+All Prolog files must be in the same folder:
 
-It is not designed for:
+```text
+gui.pl
+main.pl
+knowledge_base.pl
+inference_engine.pl
+test_system.pl
+```
 
-- Industrial composting facilities
-- Hazardous-waste treatment
-- Medical-waste treatment
-- Commercial regulatory compliance
-- Laboratory analysis
-- Replacing advice from environmental authorities
+Make sure the terminal is opened inside that folder before running the application.
+
+### The GUI opens but does not produce recommendations
+
+Check that `knowledge_base.pl` contains all 25 rules and that `inference_engine.pl` is in the same folder.
+
+Run the automated tests:
+
+```powershell
+swipl -q -s test_system.pl -g run_tests -t halt
+```
+
+If any tests fail, review the error displayed in the terminal.
+
+### Stop the application from the terminal
+
+Close the GUI using the **Exit** button.
+
+If the interface is unresponsive, return to the terminal and press:
+
+```text
+Ctrl+C
+```
+
+Then follow the SWI-Prolog prompt to abort the program.
+
+## Quick Command Reference
+
+Run the graphical interface:
+
+```powershell
+swipl -q -s gui.pl
+```
+
+Run the command-line interface:
+
+```powershell
+swipl -q -s main.pl
+```
+
+Run the automated tests:
+
+```powershell
+swipl -q -s test_system.pl -g run_tests -t halt
+```
+
+Check the SWI-Prolog version:
+
+```powershell
+swipl --version
+```
+
+Check XPCE availability:
+
+```powershell
+swipl -q -g "use_module(library(pce)),writeln('XPCE ready'),halt"
+```
